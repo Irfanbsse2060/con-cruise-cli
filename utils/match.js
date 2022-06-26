@@ -28,22 +28,42 @@ const calculateScore = (cruiser, customer) => {
 };
 
 const initCruiserAndCustomerGraph = (cruisers, customers) => {
-	const graph = new Graph();
+	const cruiserGraph = new Graph();
+	const customerGraph = new Graph();
 	cruisers.forEach((cruiser) => {
-		graph.addVertex(cruiser.fullName);
+		cruiserGraph.addVertex(cruiser.fullName);
 		customers.forEach(customer => {
-			graph.addVertex(customer.fullName);
-			graph.addEdge(cruiser.fullName, [customer.fullName, calculateScore(cruiser, customer)]);
+			customerGraph.addVertex(customer.fullName);
+			cruiserGraph.addEdge(cruiser.fullName, [customer.fullName, calculateScore(cruiser, customer)]);
+			customerGraph.addEdge(customer.fullName, [cruiser.fullName, calculateScore(cruiser, customer)]);
 		});
 	});
-	return graph;
+
+	return [cruiserGraph, customerGraph];
 };
 
-const findCustomer = (cruiser, cruiserAndCustomerGraph, alreadyMatchedCustomers) => {
-	const customer = cruiserAndCustomerGraph.findMaxVertex(cruiser.fullName, alreadyMatchedCustomers);
-	if (!customer)
-		return null;
-	return { fullName: customer[0], score: customer[1] };
+const findCustomer = (cruiser, cruiserGraph, customerGraph, alreadyMatchedCustomers) => {
+	let excludeUsers = {...alreadyMatchedCustomers}
+
+	while(true)
+	{
+		let matchedCustomer = cruiserGraph.findMaxVertex(cruiser, excludeUsers)
+		if(!matchedCustomer)
+			return null;
+
+		const matchedDriver = customerGraph.findMaxVertex(matchedCustomer[0], excludeUsers)
+
+
+		if(matchedDriver[0]!== cruiser)
+		{
+			excludeUsers[matchedCustomer[0]] = true
+			excludeUsers[matchedDriver[0]] = true
+		}
+		else {
+			return  { fullName: matchedCustomer[0], score: matchedCustomer[1] }
+		}
+	}
+
 };
 
 
@@ -56,6 +76,7 @@ const logMatchedCruisersAndCustomers = (matched, idleCustomer, idleCruiser) => {
 		console.log(`${dim(`Score:`)} ${bold(yellow(score))}`);
 		console.log();
 	});
+	console.log();
 
 	console.log(`${bold(yellow('============ Idle customers =============='))}`);
 	idleCustomer.length === 0 && console.log(`${dim(`No idle Customers`)}`);
@@ -63,6 +84,7 @@ const logMatchedCruisersAndCustomers = (matched, idleCustomer, idleCruiser) => {
 		console.log(`${dim(`#${id}`)} ${bold(yellow(fullName))}`);
 		console.log();
 	});
+	console.log();
 
 	console.log(`${bold(yellow('============ Idle cruisers =============='))}`);
 	idleCruiser.length === 0 && console.log(`${dim(`No idle Cruisers`)}`);
@@ -70,24 +92,26 @@ const logMatchedCruisersAndCustomers = (matched, idleCustomer, idleCruiser) => {
 		console.log(`${dim(`#${id}`)} ${bold(yellow(fullName))}`);
 		console.log();
 	});
+	console.log();
 
 };
+
+
 module.exports = async () => {
 	const customers = await fetchUsers('CUSTOMER');
 	const cruisers = await fetchUsers('CRUISER');
-	const cruiserAndCustomerGraph = initCruiserAndCustomerGraph(cruisers, customers);
+	const [cruiserGraph, customerGraph] = initCruiserAndCustomerGraph(cruisers, customers);
 
 
 	const matchedCruisersAndCustomers = [];
-	const alreadyMatchedCustomers = {};
-	const alreadyMatchedCruisers = {};
+	const alreadyMatchedUsers = {};
 
 	cruisers.forEach((cruiser) => {
-		const customer = findCustomer(cruiser, cruiserAndCustomerGraph, alreadyMatchedCustomers);
+		const customer = findCustomer(cruiser.fullName, cruiserGraph, customerGraph, alreadyMatchedUsers);
 		if (!customer)
 			return;
-		alreadyMatchedCustomers[customer.fullName] = true;
-		alreadyMatchedCruisers[cruiser.fullName] = true;
+		alreadyMatchedUsers[customer.fullName] = true;
+		alreadyMatchedUsers[cruiser.fullName] = true;
 		matchedCruisersAndCustomers.push({
 			CustomerName: customer.fullName,
 			CruiserName: cruiser.fullName,
@@ -95,8 +119,8 @@ module.exports = async () => {
 		});
 	});
 
-	const idleCustomers = customers.filter((customer) => !alreadyMatchedCustomers[customer.fullName]);
-	const idleCruisers = cruisers.filter((cruisers) => !alreadyMatchedCruisers[cruisers.fullName]);
+	const idleCustomers = customers.filter((customer) => !alreadyMatchedUsers[customer.fullName]);
+	const idleCruisers = cruisers.filter((cruisers) => !alreadyMatchedUsers[cruisers.fullName]);
 
 	logMatchedCruisersAndCustomers(matchedCruisersAndCustomers, idleCustomers, idleCruisers);
 

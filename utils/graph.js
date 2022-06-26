@@ -6,17 +6,14 @@ class Graph {
 
 
 	addVertex(v) {
+		if(this.AdjList.get(v))
+			return;
 		this.AdjList.set(v, []);
 	}
 
 
 	addEdge(v, w) {
-
 		this.AdjList.get(v).push(w);
-
-		// Since graph is undirected,
-		// add an edge from w to v also
-		this.AdjList.get(w[0]).push([v, w[1]]);
 	}
 
 
