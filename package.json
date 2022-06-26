@@ -1,0 +1,42 @@
+{
+	"name": "con-curise-cli",
+	"description": "Cli to achieve the best demand fulfillment",
+	"version": "0.0.1",
+	"license": "UNLICENSED",
+	"bin": {
+		"con-curise-cli": "index.js",
+		"con-curise": "index.js"
+	},
+	"author": {
+		"name": "Irfan Ali",
+		"email": "irfan.htc40@gmail.com",
+		"url": "none"
+	},
+	"keywords": [
+		"con-curise-cli",
+		"Irfan Ali"
+	],
+	"files": [
+		"index.js",
+		"utils"
+	],
+	"scripts": {
+		"format": "prettier --write \"./**/*.{js,json}\""
+	},
+	"dependencies": {
+		"await-to-js": "^3.0.0",
+		"axios": "^0.27.2",
+		"chalk": "^4.1.2",
+		"cli-alerts": "^1.2.2",
+		"cli-handle-error": "^4.4.0",
+		"cli-handle-unhandled": "^1.1.1",
+		"cli-meow-help": "^3.1.0",
+		"cli-welcome": "^2.2.2",
+		"meow": "^9.0.0",
+		"ora": "^5.4.1"
+	},
+	"devDependencies": {
+		"node-fetch": "^3.2.6",
+		"prettier": "^2.7.1"
+	}
+}
