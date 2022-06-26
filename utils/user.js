@@ -13,7 +13,6 @@ module.exports = {
 		spinner.start(dim(`Fetching ${userRole}…`));
 		const [err, res] = await to(axios.get(userRole? `${apiURL}?role=${userRole}`: apiURL));
 		handleError(`API CALL FAILED`, err, true, true);
-
 		const users = res.data.map(({ id, fullName, lat, long, numberOfRides , averageRating, role}) => {
 			return {
 				id,
@@ -29,6 +28,7 @@ module.exports = {
 		return users;
 	},
 	logUsers: (users)=>{
+		users.length === 0 && console.log(`${bold(yellow('users do not exist'))}`);
 		users.map(({ id, fullName, lat, long, numberOfRides , averageRating, role }) => {
 			console.log(`${dim(`#${id}`)} ${bold(yellow(fullName))}`);
 			console.log(`${dim(`Lat:`)} ${bold(lat)}`);

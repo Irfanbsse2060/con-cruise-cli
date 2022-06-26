@@ -1,11 +1,11 @@
 {
-	"name": "con-curise-cli",
+	"name": "con-cruise-cli",
 	"description": "Cli to achieve the best demand fulfillment",
 	"version": "0.0.1",
 	"license": "UNLICENSED",
 	"bin": {
-		"con-curise-cli": "index.js",
-		"con-curise": "index.js"
+		"con-cruise-cli": "index.js",
+		"con-cruise": "index.js"
 	},
 	"author": {
 		"name": "Irfan Ali",
@@ -13,7 +13,7 @@
 		"url": "none"
 	},
 	"keywords": [
-		"con-curise-cli",
+		"con-cruise-cli",
 		"Irfan Ali"
 	],
 	"files": [
@@ -36,6 +36,7 @@
 		"ora": "^5.4.1"
 	},
 	"devDependencies": {
+		"geo-distance": "^0.2.0",
 		"node-fetch": "^3.2.6",
 		"prettier": "^2.7.1"
 	}

@@ -38,7 +38,7 @@ const commands = {
 };
 
 const helpText = meowHelp({
-	name: `con-curise`,
+	name: `con-cruise`,
 	flags,
 	commands
 });
