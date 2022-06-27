@@ -9,8 +9,8 @@
 
 const init = require('./utils/init');
 const cli = require('./utils/cli');
-const { fetchUsers, logUsers } = require('./utils/user');
-const matchUsers = require('./utils/match');
+const { fetchUsers, logUsers } = require('./src/user');
+const matchUsers = require('./src/match');
 const log = require('./utils/log');
 
 const input = cli.input;
