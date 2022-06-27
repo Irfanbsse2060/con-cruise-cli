@@ -26,7 +26,7 @@ $ npm install -g
 # To list all the commands
 $ con-cruise manual
 ```
-
+![Usage example](public/img.png "Usage example")
 ## Stay in touch
 
 - Author - [Irfan Ali](https://github.com/Irfanbsse2060)
