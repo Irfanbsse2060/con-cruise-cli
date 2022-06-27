@@ -33,11 +33,11 @@
 		"cli-meow-help": "^3.1.0",
 		"cli-welcome": "^2.2.2",
 		"meow": "^9.0.0",
-		"ora": "^5.4.1"
+		"ora": "^5.4.1",
+		"geo-distance": "^0.2.0",
+		"node-fetch": "^3.2.6"
 	},
 	"devDependencies": {
-		"geo-distance": "^0.2.0",
-		"node-fetch": "^3.2.6",
 		"prettier": "^2.7.1"
 	}
 }
